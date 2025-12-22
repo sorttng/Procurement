@@ -8,7 +8,7 @@ using Signet.SqlSugarModel;
 using System.Collections.ObjectModel;
 namespace Signet.Model
 {
-    public  class Log_Model: ObservableObject
+    public class Log_Model: ObservableObject
     {
         /// <summary>
         /// 日志查询开始时间
@@ -41,5 +41,24 @@ namespace Signet.Model
             set { _LogList = value; RaisePropertyChanged(() => LogList); }
         }
 
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        private ObservableCollection<User_Table> _UserList;
+        public ObservableCollection<User_Table> UserList
+        {
+            get { return _UserList; }
+            set { _UserList = value; RaisePropertyChanged(() => UserList); }
+        }
+
+        /// <summary>
+        /// 选中的用户列表
+        /// </summary>
+        private ObservableCollection<User_Table> _SelectedUserList;
+        public ObservableCollection<User_Table> SelectedUserList
+        {
+            get { return _SelectedUserList; }
+            set { _SelectedUserList = value; RaisePropertyChanged(() => SelectedUserList); }
+        }
     }
 }

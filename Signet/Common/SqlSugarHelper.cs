@@ -15,10 +15,10 @@ namespace Signet.Common
         //public static string ConnectionString = $"Data Source={path};Version=3;";
         //public static string ConnectionString = @"DataSource=mDatabase.db;Version=3;Journal Mode=WAL;Pooling=True;";
 
-        public static string ServerIP = "192.168.11.82";
+        public static string ServerIP = "localhost";
         public static string DB_UerName = "yst";
         public static string DB_Pwd = "123456";
-        public static string Db_Name = "Signet_DB";
+        public static string Db_Name = "Procurement_DB";
 
         ///sqlserver        
         public static string ConnectionString = string.Format

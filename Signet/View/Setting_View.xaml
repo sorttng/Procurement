@@ -61,7 +61,7 @@
 
         </GroupBox>
 
-        <GroupBox Header="语言设置" Grid.Row="1">
+        <GroupBox Header="语言设置" Grid.Row="1" Visibility="Hidden">
             <Button Width="80" Height="30">语言
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -71,7 +71,7 @@
             </Button>
         </GroupBox>
 
-        <GroupBox Header="地区设置" Grid.Row="2">
+        <GroupBox Header="地区设置" Grid.Row="2" Visibility="Hidden">
             <StackPanel>
                 <!--<ComboBox x:Name="cmbxPortList" Margin="5" Width="200" 
                           ItemsSource="{Binding mSetting_Model.Locations,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"

@@ -158,9 +158,8 @@
                 <TextBlock Text="   欢迎您 ！" FontSize="35" HorizontalAlignment="Center"
                            Margin="20" Foreground="White"></TextBlock>
 
-
                 <TextBox Margin="20"  Width="200" Height="30" Style="{StaticResource UserNameTextBoxStyle}"
-                         Text="{Binding mLogin_Window_Model.UserName, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged,
+                         Text="{Binding mLogin_Window_Model.UserCode, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True, NotifyOnValidationError=True}"></TextBox>
 
                 <PasswordBox Margin="10"  Width="200" Height="30" Style="{StaticResource PasswordBoxStyle}"
@@ -170,8 +169,10 @@
                     </i:Interaction.Behaviors>
                 </PasswordBox>
 
-                <Button x:Name="Login_BTN" Content="登录"
-                        Margin="30" Width="150">
+                <Button x:Name="Login_BTN" Content="登   录" FontSize="18"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                        Margin="30" Width="150" Style="{StaticResource RoundedButtonStyle}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <mvvm:EventToCommand Command="{Binding Login_Command}"/>

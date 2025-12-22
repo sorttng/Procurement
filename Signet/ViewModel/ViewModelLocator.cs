@@ -46,7 +46,11 @@ namespace Signet.ViewModel
             SimpleIoc.Default.Register<Login_Window_ViewModel>();
             SimpleIoc.Default.Register<Setting_ViewModel>();
             SimpleIoc.Default.Register<About_ViewModel>();
-            SimpleIoc.Default.Register<Log_ViewModel>();           
+            SimpleIoc.Default.Register<Log_ViewModel>();
+            SimpleIoc.Default.Register<Users_ViewModel>();
+            SimpleIoc.Default.Register<AuthorityCfg_ViewModel>();
+
+
         }
 
 
@@ -64,7 +68,15 @@ namespace Signet.ViewModel
             {
                 return ServiceLocator.Current.GetInstance<Home_ViewModel>();
             }
-        }        
+        }
+
+        public Users_ViewModel Users
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<Users_ViewModel>();
+            }
+        }
 
         //public Login_Window_ViewModel Login
         //{
@@ -98,8 +110,13 @@ namespace Signet.ViewModel
             }
         }
 
-
-        
+        public AuthorityCfg_ViewModel AuthorityCfg
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AuthorityCfg_ViewModel>();
+            }
+        }
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

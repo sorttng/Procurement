@@ -11,7 +11,7 @@ namespace Signet.SqlSugarModel
     /// 
     ///</summary>
     [SugarTable("Authorities_Table")]
-    public class Authorities_Model
+    public class Authorities_Table
     {
         /// <summary>
         /// 备  注:
@@ -39,7 +39,7 @@ namespace Signet.SqlSugarModel
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName = "IsEffect")]
-        public long? IsEffect { get; set; }
+        public bool? IsEffect { get; set; }
     }
 
 }

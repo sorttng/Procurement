@@ -55,6 +55,8 @@ namespace Signet.ViewModel
             {
                 LogStartTime = DateTime.Now.Date.AddDays(-1),
                 LogEndTime = DateTime.Now.Date,
+                UserList = new System.Collections.ObjectModel.ObservableCollection<User_Table>(SqlSugarHelper.mDB.Queryable<User_Table>().ToList()),
+                SelectedUserList = new System.Collections.ObjectModel.ObservableCollection<User_Table>(),
                 LogList = new System.Collections.ObjectModel.ObservableCollection<SqlSugarModel.Nlog_Model>(),
             };
 
@@ -109,7 +111,9 @@ namespace Signet.ViewModel
                 int totalPage = 0;
                 mLog_Model.LogList = new System.Collections.ObjectModel.ObservableCollection<Nlog_Model>
                     (SqlSugarHelper.mDB.Queryable<Nlog_Model>()
-                    .Where(a => a.Time >= mLog_Model.LogStartTime && a.Time <= mLog_Model.LogEndTime)
+                    .Where(a => a.Logged >= mLog_Model.LogStartTime 
+                    && a.Logged <= mLog_Model.LogEndTime
+                    && mLog_Model.SelectedUserList.Select(b=>b.UserID).ToList().Contains(a.UserID))
                     .ToPageList(curPage, pageSize, ref totalCount, ref totalPage));
                 TotalItems = totalCount;
                 logger.Info("日志查询成功！");

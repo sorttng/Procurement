@@ -6,14 +6,23 @@
       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:local="clr-namespace:Signet.View"
+      xmlns:ui ="clr-namespace:Signet.UI"
+      xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+      Dialog:DialogParticipation.Register="{Binding}"
+      xmlns:c="clr-namespace:Signet.Common"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Users_View">
-
+    <Page.DataContext>
+        <Binding Path="Users" Source="{StaticResource Locator}"></Binding>
+    </Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"></RowDefinition>
-            <RowDefinition Height="80*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="100*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>        
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -21,53 +30,115 @@
                 <ColumnDefinition Width="*"/>
                 <!-- 第一列占据剩余空间 -->
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Button Style="{StaticResource HeadButtonStyle}" Content="新 增"></Button>
-                
-                <Button Style="{StaticResource HeadButtonStyle}" Content="删 除" Background="OrangeRed"></Button>
 
-                <TextBox Width="200" Height=" 35" Margin="50,5,5,5"></TextBox>
-                <Button Style="{StaticResource HeadButtonStyle}" Content="查 询"></Button>
+
+                <!--<Button Style="{StaticResource HeadButtonStyle}" Content="删 除" Background="OrangeRed">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Delete_Command}">
+                            </i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>-->
+
+                <TextBox Width="200" Height=" 35" Margin="50,5,5,5" 
+                         mah:TextBoxHelper.Watermark ="模糊查询请输入关键词" VerticalContentAlignment="Center"
+                         Text="{Binding mUsers_Model.QueryConditions,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Button Style="{StaticResource HeadButtonStyle}" Content="查 询"
+                        IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[UserQuery]}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Search_Command}">
+                            </i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button Style="{StaticResource HeadButtonStyle}" Content="新 增" 
+                        IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[UserInsert]}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Insert_Command}">
+                            </i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </StackPanel>
 
-            <Button Grid.Column="1" Style="{StaticResource HeadButtonStyle}" Content="修改密码" HorizontalAlignment="Right"></Button>
+            <Button Grid.Column="2" Style="{StaticResource HeadButtonStyle}" Content="修改个人密码" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ChangePassword_Command}">
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </Grid>
 
 
         <DataGrid Grid.Row="1" 
-                ItemsSource="{Binding Path=ItemsSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ElementName=dataPager}" 
+                ItemsSource="{Binding mUsers_Model.UserInfoList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 AutoGenerateColumns="False" CanUserAddRows="False" VerticalScrollBarVisibility="Auto"                                      
                 CanUserSortColumns="False" IsReadOnly ="True"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <DataGridTextColumn Header="序号" Binding="{Binding SerialNumber}" Width="auto" />
-            <DataGridTextColumn Header="用户名" Binding="{Binding SerialNumber}" Width="auto" />
-            <DataGridTextColumn Header="部门" Binding="{Binding SerialNumber}" Width="auto" />
-            <DataGridTextColumn Header="出生日期" Binding="{Binding SerialNumber}" Width="auto" />
-            <DataGridTextColumn Header="权限" Binding="{Binding SerialNumber}" Width="auto" />
-            <DataGridTemplateColumn Header="编辑" Width="*">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding DataContext.Updata_Command, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                                                           CommandParameter="{Binding User_Id}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Label>编辑</Label>
-                                    <iconPacks:PackIconBoxIcons VerticalAlignment="Center"  Kind="RegularEditAlt" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="序号" Binding="{Binding SerialNum}" Width="auto" />
+                <DataGridTextColumn Header="用户编码" Binding="{Binding UserCode}" Width="*" />
+                <DataGridTextColumn Header="用户名" Binding="{Binding UserName}" Width="*" />
+                <DataGridTextColumn Header="部门" Binding="{Binding DepartmentName}" Width="*" />
+                <DataGridTextColumn Header="角色" Binding="{Binding RoleName}" Width="*" />
+                <DataGridTextColumn Header="电话" Binding="{Binding PhoneNum}" Width="*" />
+                <DataGridTextColumn Header="电子邮箱" Binding="{Binding Email}" Width="*" />
+                <DataGridTextColumn Header="出生日期" Binding="{Binding Birthday ,StringFormat='yyyy/MM/dd'}"  Width="*" />
+                <DataGridTemplateColumn Header="操作" Width="*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Style="{StaticResource DatagridButtonStyle }" Background="Green"
+                                        IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[UserInsert]}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.Updata_Command, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                               CommandParameter="{Binding UserID}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                        <TextBlock>编辑</TextBlock>
+                                        <iconPacks:PackIconBoxIcons VerticalAlignment="Center"  Kind="RegularEditAlt"  Width="12"/>
+                                    </StackPanel>
+                                </Button>
 
+                                <Button Style="{StaticResource DatagridButtonStyle }" Background="Red"
+                                        IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[UserDelete]}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.Delete_Command, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                               CommandParameter="{Binding UserID}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                        <TextBlock>删除</TextBlock>
+                                        <iconPacks:PackIconBoxIcons VerticalAlignment="Center"  Kind="RegularTrash" Width="12"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
+
+        <!-- 分页控件 -->
+        <ui:PagerControl Grid.Row="2"
+            TotalItems="{Binding TotalItems}"
+            CurrentPage="{Binding CurrentPage, Mode=TwoWay}"
+            PageSize ="{Binding PageSize, Mode=TwoWay}"/>
+
     </Grid>
 </Page>

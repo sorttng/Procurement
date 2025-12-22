@@ -12,15 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MahApps.Metro.Controls;
 namespace Signet.View
 {
     /// <summary>
-    /// UserManage_View.xaml 的交互逻辑
+    /// UserManage_Window.xaml 的交互逻辑
     /// </summary>
-    public partial class UserManage_View : Page
+    public partial class UserManage_Window : MetroWindow
     {
-        public UserManage_View()
+        public UserManage_Window()
         {
             InitializeComponent();
         }

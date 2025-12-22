@@ -16,7 +16,7 @@ namespace Signet.SqlSugarModel
         /// 备  注:
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName = "Role_Auth_Relationship_ID", IsPrimaryKey = true)]
+        [SugarColumn(ColumnName = "Role_Auth_Relationship_ID", IsPrimaryKey = true, IsIdentity = true)]
         public long? Role_Auth_Relationship_ID { get; set; }
 
         /// <summary>

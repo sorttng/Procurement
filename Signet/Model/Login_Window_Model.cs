@@ -12,15 +12,15 @@ namespace Signet.Model
 {
     public class Login_Window_Model: ObservableObject
     {
-        private string _UserName;
+        private string _UserCode;
         /// <summary>
         /// 用户名
         /// </summary>
         [Required(ErrorMessage = "用户名不能为空！")]
-        public string UserName
+        public string UserCode
         {
-            get { return _UserName; }
-            set { _UserName = value; RaisePropertyChanged(() => UserName); }
+            get { return _UserCode; }
+            set { _UserCode = value; RaisePropertyChanged(() => UserCode); }
         }
 
         private string _Password=string.Empty;
@@ -37,7 +37,7 @@ namespace Signet.Model
         {
             get
             {
-                if (columnName == nameof(this.UserName) && this.UserName == string.Empty)
+                if (columnName == nameof(this.UserCode) && this.UserCode == string.Empty)
                 {
                     return "Number is not greater than 10!";
                 }

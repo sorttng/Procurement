@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Signet.View
 {
     /// <summary>
-    /// Page1.xaml 的交互逻辑
+    /// AuthorityCfg_View.xaml 的交互逻辑
     /// </summary>
-    public partial class Page1 : Page
+    public partial class AuthorityCfg_View : Page
     {
-        public Page1()
+        public AuthorityCfg_View()
         {
             InitializeComponent();
         }

@@ -13,47 +13,66 @@ namespace Signet.SqlSugarModel
     public class User_Table
     {
         /// <summary>
-        /// User_Table
-        /// </summary>
-        public User_Table()
-        {
-        }
+        /// 备  注:
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "UserID", IsPrimaryKey = true, IsIdentity = true)]
+        public long UserID { get; set; }
 
-        private System.Int64 _UserID;
         /// <summary>
-        /// UserID
-        /// </summary>
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
-        public System.Int64 UserID { get { return this._UserID; } set { this._UserID = value; } }
+        /// 备  注:用户名
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "UserName")]
+        public string UserName { get; set; }
 
-        private System.String _UserName;
         /// <summary>
-        /// UserName
-        /// </summary>
-        public System.String UserName { get { return this._UserName; } set { this._UserName = value; } }
+        /// 备  注:部门
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "UserDeparID")]
+        public long UserDeparID { get; set; }
 
-        private System.String _UserDepar;
         /// <summary>
-        /// UserDepar
-        /// </summary>
-        public System.String UserDepar { get { return this._UserDepar; } set { this._UserDepar = value; } }
+        /// 备  注:出生日期
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "Birthday")]
+        public DateTime Birthday { get; set; }
 
-        private System.String _Birthday;
         /// <summary>
-        /// Birthday
-        /// </summary>
-        public System.String Birthday { get { return this._Birthday; } set { this._Birthday = value; } }
+        /// 备  注:密码
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "Password")]
+        public string Password { get; set; }
 
-        private System.String _Password;
         /// <summary>
-        /// Password
-        /// </summary>
-        public System.String Password { get { return this._Password; } set { this._Password = value; } }
+        /// 备  注:角色
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "UserRoleID")]
+        public long UserRoleID { get; set; }
 
-        private System.Int64 _UserRole;
         /// <summary>
-        /// UserRole
-        /// </summary>
-        public System.Int64 UserRole { get { return this._UserRole; } set { this._UserRole = value; } }
+        /// 备  注:用户登录编码
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "UserCode")]
+        public string UserCode { get; set; }
+
+        /// <summary>
+        /// 备  注:电话号码
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "PhoneNum")]
+        public string PhoneNum { get; set; }
+
+        /// <summary>
+        /// 备  注:
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "Email")]
+        public string Email { get; set; }
     }
 }

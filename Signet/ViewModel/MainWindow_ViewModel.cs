@@ -26,7 +26,7 @@ using Modbus.Device;
 using Modbus.Serial;
 using Modbus.Utility;
 using NLog.Targets;
-
+using System.IO;
 namespace Signet.ViewModel
 {
     public class MainWindow_ViewModel : ViewModelBase//BindableBase
@@ -73,8 +73,16 @@ namespace Signet.ViewModel
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserInjuredSolid },
                 Label = "用户管理",
-                NavigationType = typeof(UserManage_View),
-                NavigationDestination = new Uri("View/UserManage_View.xaml", UriKind.RelativeOrAbsolute)
+                NavigationType = typeof(Users_View),
+                NavigationDestination = new Uri("View/Users_View.xaml", UriKind.RelativeOrAbsolute)
+            });
+
+            this.Menu.Add(new MenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.SquarePersonConfinedSolid},
+                Label = "权限配置",
+                NavigationType = typeof(AuthorityCfg_View),
+                NavigationDestination = new Uri("View/AuthorityCfg_View.xaml", UriKind.RelativeOrAbsolute)
             });
 
 
@@ -223,8 +231,11 @@ namespace Signet.ViewModel
                     string selectedFilePath = openFileDialog.FileName;
                     try
                     {
-                        mMain_Model.UserHeadSculpturePath = selectedFilePath;
-                        ConfigFileHelper.ConfigSet("UserHeadSculpturePath", selectedFilePath);
+                        string dstPath = Path.Combine(System.Windows.Forms.Application.StartupPath, "Imgs", Path.GetFileName(selectedFilePath));
+                        File.Copy(selectedFilePath, dstPath);
+
+                        mMain_Model.UserHeadSculpturePath = dstPath;
+                        ConfigFileHelper.ConfigSet("UserHeadSculpturePath", dstPath);
                     }
                     catch
                     {

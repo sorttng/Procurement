@@ -40,6 +40,7 @@ namespace Signet.ViewModel
 
             #region 窗口注册
             WindowManager.Register<MainWindow>("MainWindow");
+            WindowManager.Register<UserManage_Window>("UserManage");
             #endregion
 
             _dialogCoordinator = DialogCoordinator.Instance;
@@ -49,7 +50,7 @@ namespace Signet.ViewModel
             mLogin_Window_Model = new Login_Window_Model()
             {
                 SoftTitle = string.Join(" ",SoftwareInfoHelper.SoftwareName.ToCharArray()),
-                UserName = "user1",
+                UserCode = "C0001",
                 Password = "123456",
             };
 
@@ -75,12 +76,16 @@ namespace Signet.ViewModel
         public class UserInfoResult
         {
             public int uid { get; set; }
+            public string ucode { get; set; }
             public string uname { get; set; }
-            public string udepar { get; set; }
-            public string ubirthday { get; set; }
-            public string rtrolecode { get; set; }
-            public string rtrolename { get; set; }
-            public int rtroleid { get; set; }
+            public string uphonenum { get; set; }
+            public string uemail { get; set; }
+            public DateTime ubirthday { get; set; }
+            public int udeparid { get; set; }
+            public string udeparname { get; set; }
+            public int uroleid { get; set; }
+            public string urolecode { get; set; }
+            public string urolename { get; set; }
             public string atauthority { get; set; }
         }
 
@@ -149,82 +154,72 @@ namespace Signet.ViewModel
             //    }
             //}
 
-            if (mLogin_Window_Model.UserName == string.Empty
+            if (mLogin_Window_Model.UserCode == string.Empty
                 || mLogin_Window_Model.Password == string.Empty
-                || mLogin_Window_Model.UserName == null
+                || mLogin_Window_Model.UserCode == null
                 || mLogin_Window_Model.Password == null)
             { ShowMessage("提示！", "用户名或密码不能为空！"); logger.Info("用户名或密码不能为空！"); return; }
 
             var userInfo = SqlSugarHelper.mDB.Queryable<SqlSugarModel.User_Table>().
-                Where(a => a.UserName == mLogin_Window_Model.UserName);
+                Where(a => a.UserCode == mLogin_Window_Model.UserCode);
             if (userInfo.Count() == 0 || userInfo == null)
             {
                 ShowMessage("提示！", "用户名或密码错误！"); logger.Info("用户名或密码错误！"); return;
             }
 
             SqlSugarModel.User_Table info = userInfo.First();
-            if (info.Password != mLogin_Window_Model.Password)
+            if (!PasswordStorage.VerifyPassword(mLogin_Window_Model.Password, info.Password))
             {
                 ShowMessage("提示！", "用户名或密码错误！"); logger.Info("用户名或密码错误！"); return;
             }
             #endregion
 
-            //登录用户全局使用
-            //var uinfo = SqlSugarHelper.mDB.Queryable<SqlSugarModel.User_Table, SqlSugarModel.Role_Table, SqlSugarModel.Role_Auth_Relationship_Table, SqlSugarModel.Authorities_Model>((ut, rt, rart, at) => new JoinQueryInfos(
-            //   JoinType.Left, ut.UserRole == rt.Role_ID,
-            //   JoinType.Left, rt.Role_ID == rart.Role_ID,
-            //   JoinType.Left, rart.Authority_ID == at.Authorities_ID
-            //   ))
-            //   .Where(ut => ut.UserID == info.UserID)
-            //   .GroupBy((ut, rt, rart, at) => ut.UserID)
-            //   .Select((ut, rt, rart, at) => new
-            //   {
-            //       uid = ut.UserID,
-            //       uname = ut.UserName,
-            //       udepar = ut.UserDepar,
-            //       ubirthday = ut.Birthday,
-            //       rtrolecode = rt.Role_Code,
-            //       rtrolename = rt.Role_Name,
-            //       rtroleid = rt.Role_ID,
-            //       atauthority = SqlFunc.MappingColumn<string>("string", "GROUP_CONCAT(DISTINCT at.Authority_Name) "),
-            //   }).ToList().FirstOrDefault();
-
             var query = @"
-                SELECT 
-                    ut.UserID AS uid,
-                    ut.UserName AS uname,
-                    ut.UserDepar AS udepar,
-                    ut.Birthday AS ubirthday,
-                    rt.Role_Code AS rtrolecode,
-                    rt.Role_Name AS rtrolename,
-                    rt.Role_ID AS rtroleid,
-                    STUFF((
-                        SELECT DISTINCT ', ' + at.Authority_Name
-                        FROM Role_Auth_Relationship_Table rart
-                        JOIN Authorities_Table at ON rart.Authority_ID = at.Authorities_ID
-                        WHERE rart.Role_ID = rt.Role_ID
-                        FOR XML PATH(''), TYPE
-                    ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS atauthority
-                FROM User_Table ut
-                LEFT JOIN Role_Table rt ON ut.UserRole = rt.Role_ID
-                WHERE ut.UserID = @UserID
-                GROUP BY ut.UserID, ut.UserName, ut.UserDepar, ut.Birthday, rt.Role_Code, rt.Role_Name, rt.Role_ID";
+            SELECT 
+                u.UserID as uid,
+                u.UserCode as ucode,
+                u.UserName as uname,
+                u.PhoneNum as uphonenum,
+                u.Email as uemail,
+                u.Birthday as ubirthday,
+                d.DepartID as udeparid,
+                d.Depart_Name AS udeparname,
+                r.Role_ID as uroleid,
+                r.Role_Code AS urolecode,
+                r.Role_Name AS urolename,
+                STUFF((
+                    SELECT ',' + a.Authority_Name
+                    FROM Authorities_Table a
+                    INNER JOIN Role_Auth_Relationship_Table rar ON a.Authorities_ID = rar.Authority_ID
+                    WHERE rar.Role_ID = r.Role_ID
+                    AND a.IsEffect = 1
+                    FOR XML PATH('')
+                ), 1, 1, '') AS atauthority
+            FROM User_Table u
+            INNER JOIN Depart_Table d ON u.UserDeparID = d.DepartID
+            INNER JOIN Role_Table r ON u.UserRoleID = r.Role_ID
+            WHERE u.UserCode = @UserCode;";
 
-            var uinfo = SqlSugarHelper.mDB.Ado.SqlQuery<UserInfoResult>(query, new { UserID = info.UserID }).ToList().FirstOrDefault();
+            var uinfo = SqlSugarHelper.mDB.Ado.SqlQuery<UserInfoResult>(query, new { UserCode = info.UserCode }).ToList().FirstOrDefault();
 
             UserInfo.LogedUserInfo = new UserInfo_Model
             {
                 UserID = uinfo.uid,
+                UserCode = uinfo.ucode,
                 UserName = uinfo.uname,
-                UserDepar = uinfo.udepar,
+                PhoneNum = uinfo.uphonenum,
+                Email = uinfo.uemail,
                 Birthday = uinfo.ubirthday,
-                UserRoleCode = uinfo.rtrolecode,
-                UserRole = uinfo.rtrolename,
-                UserRoleID = uinfo.rtroleid,
+                DepartID = uinfo.udeparid,
+                DepartmentName = uinfo.udeparname,
+                RoleID = uinfo.uroleid,
+                RoleCode = uinfo.urolecode,
+                RoleName = uinfo.urolename,
                 Authorities = uinfo.atauthority == null ? new List<string>() : uinfo.atauthority.Split(',').ToList(),
-            };                
+            };
 
-            AuthorizationItemDefine.Default.RiseProperty();//刷新属性
+            AuthorizationManager.Instance.LoadUserPermission(UserInfo.LogedUserInfo.RoleID);
+
             //传参给nlog配置文件
             MappedDiagnosticsLogicalContext.Set("userId", info.UserID);
             MappedDiagnosticsLogicalContext.Set("userName", info.UserName);

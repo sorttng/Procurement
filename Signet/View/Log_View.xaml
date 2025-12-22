@@ -38,8 +38,22 @@
             <mah:DateTimePicker Name="EndTime_Dtpk" Height="35" VerticalContentAlignment="Center"
                     Culture="zh-cn" mah:TextBoxHelper.Watermark="结束时间"
                     SelectedDateTime="{Binding mLog_Model.LogEndTime, Mode=TwoWay, UpdateSourceTrigger=Explicit}"></mah:DateTimePicker>
-            <Button Name="Search_Btn" Style="{StaticResource HeadButtonStyle}" Content="搜索"
-                    IsEnabled="{Binding LogQuery ,Source={x:Static c:AuthorizationItemDefine.Default},Converter={StaticResource auCOnverter}}"
+
+            <Label VerticalAlignment="Center" Margin="40,10,10,10">选择用户</Label>
+            <mah:MultiSelectionComboBox Width="300" Height="35" Margin="10,0,0,0"
+                        SelectedItemContainerStyle="{StaticResource MahApps.Styles.MultiSelectionComboBoxSelectedItem.Removable}"
+                        ItemsSource="{Binding mLog_Model.UserList,UpdateSourceTrigger=PropertyChanged}"    
+                        mah:MultiSelectorHelper.SelectedItems="{Binding mLog_Model.SelectedUserList, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayMemberPath="UserName" SelectedValuePath="UserID"                       
+                        Separator=","
+                        SelectionMode="Multiple"
+                        IsEditable="True"
+                        mah:TextBoxHelper.ClearTextButton="True"                                        
+                        mah:TextBoxHelper.Watermark="请选择需要查询的用户">
+            </mah:MultiSelectionComboBox>
+            
+            <Button Name="Search_Btn" Style="{StaticResource HeadButtonStyle}" Content="查询"
+                    IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[LogQuery]}"
                     Click="Search_Btn_Click">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -57,10 +71,11 @@
                   ScrollViewer.VerticalScrollBarVisibility="Visible"                    
                   ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="时间" Binding="{Binding Time,ConverterCulture=zh-cn}" Width="*" />
+                <DataGridTextColumn Header="序号" Binding="{Binding RowIndex}" Width="auto" />
+                <DataGridTextColumn Header="时间" Binding="{Binding Logged,ConverterCulture=zh-cn}" Width="*" />
                 <DataGridTextColumn Header="等级" Binding="{Binding Level}" Width="*" />
                 <DataGridTextColumn Header="日志内容" Binding="{Binding Message}" Width="*" />
-                <DataGridTextColumn Header="用户" Binding="{Binding UserID}" Width="*" />
+                <DataGridTextColumn Header="用户" Binding="{Binding UserName}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
 

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:local="clr-namespace:Signet">
     <Style x:Key="HeadButtonStyle" TargetType="Button"
            BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}">
@@ -21,7 +22,18 @@
         <Setter Property="FontSize" Value="12"></Setter>
     </Style>
 
-    <Style x:Key="RoundedButtonStyle" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}">
+    <Style x:Key="DatagridButtonStyle" TargetType="Button"
+           BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}">
+        <Setter Property="Width" Value="60"></Setter>
+        <Setter Property="Height" Value="15"></Setter>
+        <Setter Property="VerticalAlignment"  Value="Center"></Setter>
+        <Setter Property="HorizontalAlignment"  Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,5,5,5"></Setter>
+        <Setter Property="FontSize" Value="10"></Setter>
+    </Style>
+
+
+    <!--<Style x:Key="RoundedButtonStyle" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button" >
@@ -29,7 +41,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="10">
-                        <!-- 设置圆角半径 -->
+                        --><!-- 设置圆角半径 --><!--
                         <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Margin="{TemplateBinding Padding}"/>
@@ -38,6 +50,30 @@
             </Setter.Value>
         </Setter>
         <Setter Property="BorderThickness" Value="1"/>
+    </Style>-->
+
+    <Style x:Key="RoundedButtonStyle" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}">
+        <Setter Property="mah:ControlsHelper.CornerRadius" Value="8"/>
+        <Setter Property="BorderThickness" Value="1"/>
+
+        <!-- 保留 MahApps 的触发器 -->
+        <Style.Triggers>
+            <!-- 鼠标悬停效果 -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush3}"/>
+            </Trigger>
+
+            <!-- 按下效果 -->
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush4}"/>
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+            </Trigger>
+
+            <!-- 禁用状态 -->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
