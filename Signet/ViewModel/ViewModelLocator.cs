@@ -49,6 +49,7 @@ namespace Signet.ViewModel
             SimpleIoc.Default.Register<Log_ViewModel>();
             SimpleIoc.Default.Register<Users_ViewModel>();
             SimpleIoc.Default.Register<AuthorityCfg_ViewModel>();
+            SimpleIoc.Default.Register<GoodsList_ViewModel>();
 
 
         }
@@ -117,6 +118,14 @@ namespace Signet.ViewModel
                 return ServiceLocator.Current.GetInstance<AuthorityCfg_ViewModel>();
             }
         }
+        public GoodsList_ViewModel Goods
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<GoodsList_ViewModel>();
+            }
+        }
+        
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

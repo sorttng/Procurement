@@ -34,7 +34,6 @@ namespace Signet.ViewModel
 
         #endregion
 
-
         #region 分页
         private int _currentPage = 1;
         public int CurrentPage
@@ -58,7 +57,6 @@ namespace Signet.ViewModel
         }
 
         #endregion
-
 
         private Users_Model _mUsers_Model;
         public Users_Model mUsers_Model
@@ -170,7 +168,7 @@ namespace Signet.ViewModel
                 }
                 mUsers_Model.UserInfoList = new System.Collections.ObjectModel.ObservableCollection<UserInfo_Model>(userList);
 
-                logger.Info("日志查询成功！");
+                logger.Info("用户查询成功！");
             }
             catch (Exception e)
             {

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 namespace Signet.ViewModel
 {
     public class AuthorityCfg_ViewModel : ViewModelBase

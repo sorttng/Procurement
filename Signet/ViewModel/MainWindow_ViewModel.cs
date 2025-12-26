@@ -68,6 +68,13 @@ namespace Signet.ViewModel
                 NavigationDestination = new Uri("View/Home_View.xaml", UriKind.RelativeOrAbsolute)
             });
 
+            this.Menu.Add(new MenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.WarehouseSolid},
+                Label = "物品目录",
+                NavigationType = typeof(GoodsList_View),
+                NavigationDestination = new Uri("View/GoodsList_View.xaml", UriKind.RelativeOrAbsolute)
+            });
 
             this.Menu.Add(new MenuItem()
             {
