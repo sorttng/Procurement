@@ -168,6 +168,7 @@ namespace Signet.ViewModel
                     }
 
                     db.CommitTran();
+                    AuthorizationManager.Instance.LoadUserPermission(mAuthorityCfg_Model.Selected_Role.Role_ID);
                     ShowMessage("提示！","权限更改成功！");
                 }
                 catch (Exception ex) { 

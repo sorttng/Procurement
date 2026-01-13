@@ -9,6 +9,9 @@
       xmlns:converter="clr-namespace:Signet.Converter"
       xmlns:ui="clr-namespace:Signet.UI"
       xmlns:dotNetKitControls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+      xmlns:c="clr-namespace:Signet.Common"
+      xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+      Dialog:DialogParticipation.Register="{Binding}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Setting_View">
@@ -25,8 +28,29 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+
+        <GroupBox Header="预警设置" Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center">预警阈值:</Label>
+                <mah:NumericUpDown Margin="5" Width="150" Height="40"
+                                   Minimum="0"
+                                   Value="{Binding mSetting_Model.InventoryThreshold, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></mah:NumericUpDown>
+                <Button Grid.Row="0" Grid.Column="8"
+                    Style="{StaticResource HeadButtonStyle}" Content="设置"
+                        IsEnabled="{Binding Source={x:Static c:AuthorizationManager.Instance},Path=[AlarmThresholdSetting]}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding AlarmSetting_Command}">
+                            </i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </StackPanel>
+        </GroupBox>
         
         <GroupBox Header="主题设置" Grid.Row="0">
             <StackPanel Orientation="Horizontal">
@@ -61,7 +85,7 @@
 
         </GroupBox>
 
-        <GroupBox Header="语言设置" Grid.Row="1" Visibility="Hidden">
+        <GroupBox Header="语言设置" Grid.Row="2" Visibility="Hidden">
             <Button Width="80" Height="30">语言
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -71,7 +95,7 @@
             </Button>
         </GroupBox>
 
-        <GroupBox Header="地区设置" Grid.Row="2" Visibility="Hidden">
+        <GroupBox Header="地区设置" Grid.Row="3" Visibility="Hidden">
             <StackPanel>
                 <!--<ComboBox x:Name="cmbxPortList" Margin="5" Width="200" 
                           ItemsSource="{Binding mSetting_Model.Locations,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"

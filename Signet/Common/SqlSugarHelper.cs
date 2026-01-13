@@ -38,7 +38,7 @@ namespace Signet.Common
             //调试SQL事件，可以删掉
             db.Aop.OnLogExecuting = (sql, pars) =>
             {
-                //Console.WriteLine(sql);//输出sql,查看执行sql 性能无影响
+                Console.WriteLine(sql);//输出sql,查看执行sql 性能无影响
 
                 //获取原生SQL推荐 5.1.4.63  性能OK
                 //UtilMethods.GetNativeSql(sql,pars)

@@ -50,7 +50,9 @@ namespace Signet.ViewModel
             SimpleIoc.Default.Register<Users_ViewModel>();
             SimpleIoc.Default.Register<AuthorityCfg_ViewModel>();
             SimpleIoc.Default.Register<GoodsList_ViewModel>();
-
+            SimpleIoc.Default.Register<Inventory_ViewModel>();
+            SimpleIoc.Default.Register<InventoryRecord_ViewModel>();
+            SimpleIoc.Default.Register<Statistics_ViewModel>();
 
         }
 
@@ -123,6 +125,30 @@ namespace Signet.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<GoodsList_ViewModel>();
+            }
+        }
+
+        public Inventory_ViewModel Inventory
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<Inventory_ViewModel>();
+            }
+        }
+
+        public InventoryRecord_ViewModel InventoryRecord
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<InventoryRecord_ViewModel>();
+            }
+        }
+
+        public Statistics_ViewModel Statistics
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<Statistics_ViewModel>();
             }
         }
         

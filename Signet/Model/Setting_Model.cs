@@ -77,6 +77,17 @@ namespace Signet.Model
             get { return _Sel_Location; }
             set { _Sel_Location = value; RaisePropertyChanged(() => Sel_Location); }
         }
+
+
+        private int _InventoryThreshold;
+        /// <summary>
+        /// 阈值
+        /// </summary>
+        public int InventoryThreshold
+        {
+            get { return _InventoryThreshold; }
+            set { _InventoryThreshold = value; RaisePropertyChanged(() => InventoryThreshold); }
+        }
     }
 
 }

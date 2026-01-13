@@ -1,28 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ControlzEx.Theming;
 using GalaSoft.MvvmLight;
-using Signet.Model;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using IronPython.Hosting;
 using MahApps.Metro.Controls;
-using ControlzEx.Theming;
-using System.Windows.Media;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Scripting.Hosting;
+using Signet.Common;
+using Signet.Model;
+using System;
+using System.Collections.Generic;
 //using System.Windows;
 using System.Configuration;
-using Signet.Common;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
-using System.Windows.Forms;
+using System.Threading.Tasks;
 using System.Windows.Data;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
-using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Forms;
+using System.Windows.Media;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 namespace Signet.ViewModel
 {
     public class Setting_ViewModel: ViewModelBase
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        #region Message
+        private readonly IDialogCoordinator _dialogCoordinator;
+        // Simple method which can be used on a Button
+        public async void ShowMessage_async(string title, string msg)
+        {
+            await _dialogCoordinator.ShowMessageAsync(this, title, msg);
+        }
+
+        public void ShowMessage(string title, string msg)
+        {
+            _dialogCoordinator.ShowModalMessageExternal(this, title, msg);
+        }
+
+        #endregion
+
+
         private Setting_Model _mSetting_Model;
 
         public Setting_Model mSetting_Model
@@ -34,6 +53,8 @@ namespace Signet.ViewModel
 
         public Setting_ViewModel()
         {
+            _dialogCoordinator = DialogCoordinator.Instance;
+
             mSetting_Model = new Setting_Model()
             {
                 // create accent color menu items for the demo
@@ -51,6 +72,7 @@ namespace Signet.ViewModel
 
                 Locations = GlobalInfo.Locations,
                 Sel_Location = GlobalInfo.CurLocation,
+                InventoryThreshold = GlobalInfo.InventoryThreshold,
             };
 
             #region 配置主题
@@ -183,5 +205,29 @@ namespace Signet.ViewModel
             }
         }
         #endregion
+
+        #region 设置地区
+        private RelayCommand _AlarmSetting_Command;
+        public RelayCommand AlarmSetting_Command
+        {
+            get
+            {
+                if (_AlarmSetting_Command == null)
+                {
+                    _AlarmSetting_Command = new RelayCommand(_AlarmSetting);
+                }
+                return _AlarmSetting_Command;
+            }
+            set { _AlarmSetting_Command = value; }
+        }
+
+        private void _AlarmSetting()
+        {
+            GlobalInfo.configService.SetConfigValue("InventoryThreshold", mSetting_Model.InventoryThreshold, UserInfo.LogedUserInfo.UserID);
+            GlobalInfo.InventoryThreshold = mSetting_Model.InventoryThreshold;
+            ShowMessage("提示！", "阈值设置成功！");
+        }
+        #endregion
+
     }
 }

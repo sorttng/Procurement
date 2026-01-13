@@ -78,6 +78,22 @@ namespace Signet.ViewModel
 
             this.Menu.Add(new MenuItem()
             {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.InvisionBrands },
+                Label = "物品出入库",
+                NavigationType = typeof(Inventory_View),
+                NavigationDestination = new Uri("View/Inventory_View.xaml", UriKind.RelativeOrAbsolute)
+            });
+
+            this.Menu.Add(new MenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.RecordVinylSolid },
+                Label = "出入库记录",
+                NavigationType = typeof(InventoryRecord_View),
+                NavigationDestination = new Uri("View/InventoryRecord_View.xaml", UriKind.RelativeOrAbsolute)
+            });
+
+            this.Menu.Add(new MenuItem()
+            {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserInjuredSolid },
                 Label = "用户管理",
                 NavigationType = typeof(Users_View),
@@ -90,6 +106,14 @@ namespace Signet.ViewModel
                 Label = "权限配置",
                 NavigationType = typeof(AuthorityCfg_View),
                 NavigationDestination = new Uri("View/AuthorityCfg_View.xaml", UriKind.RelativeOrAbsolute)
+            });
+
+            this.Menu.Add(new MenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.SquarePersonConfinedSolid },
+                Label = "报表查询",
+                NavigationType = typeof(Statistics_View),
+                NavigationDestination = new Uri("View/Statistics_View.xaml", UriKind.RelativeOrAbsolute)
             });
 
 
@@ -119,6 +143,10 @@ namespace Signet.ViewModel
                 NavigationDestination = new Uri("View/About_View.xaml", UriKind.RelativeOrAbsolute)
             });
             #endregion
+
+            //初始化配置类
+            GlobalInfo.configService = new ConfigService(SqlSugarHelper.mDB);
+            GlobalInfo.InventoryThreshold = GlobalInfo.configService.GetConfigValue("InventoryThreshold", 10);
 
             #region 获取地区列表
             //ObservableCollection<SqlSugarModel.Location_Table> locations = 

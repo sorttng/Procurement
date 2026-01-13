@@ -41,7 +41,8 @@ namespace Signet.ViewModel
             #region 窗口注册
             WindowManager.Register<MainWindow>("MainWindow");
             WindowManager.Register<UserManage_Window>("UserManage");
-            WindowManager.Register<GoodsManage_Window>("GoodsManage");            
+            WindowManager.Register<GoodsManage_Window>("GoodsManage");
+            WindowManager.Register<InventoryOpration_Window>("InventoryOpration");
             #endregion
 
             _dialogCoordinator = DialogCoordinator.Instance;

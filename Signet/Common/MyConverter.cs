@@ -31,47 +31,26 @@ namespace Signet.Common
             }
         }
 
-        // 可配置的阈值
-        public double LowThreshold { get; set; } = 10;
-        public double HighThreshold { get; set; } = 100;
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class NumericToColorConverter : IValueConverter
+    public class AlbumInventoryConverter : IValueConverter
     {
         // 可配置的阈值
-        public double LowThreshold { get; set; } = 0;
-        public double HighThreshold { get; set; } = 100;
-
-        // 可配置的颜色
-        public Brush LowValueBrush { get; set; } = Brushes.Red;      // 低值：红色
-        public Brush NormalValueBrush { get; set; } = Brushes.Yellow; // 正常值：黄色
-        public Brush HighValueBrush { get; set; } = null;            // 高值：不设置特殊颜色（使用默认）
+        //public int LowThreshold { get; set; } = GlobalInfo.InventoryThreshold;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return NormalValueBrush;
-
-            double numericValue;
-            if (value is IConvertible convertible)
-            {
-                numericValue = convertible.ToDouble(culture);
-            }
+            if(value == null)
+                return false;
+            int val = (int)value;
+            if(val<= GlobalInfo.InventoryThreshold)
+                return true;
             else
-            {
-                return NormalValueBrush;
-            }
-
-            if (numericValue < LowThreshold)
-                return LowValueBrush;        // 低于阈值：红色
-            else if (numericValue <= HighThreshold)
-                return NormalValueBrush;     // 正常范围：黄色
-            else
-                return HighValueBrush;       // 高于阈值：返回null（使用控件默认颜色）
+                return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

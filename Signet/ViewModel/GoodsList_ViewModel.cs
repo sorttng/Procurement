@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using static Community.CsharpSqlite.Sqlite3;
+
 namespace Signet.ViewModel
 {
     public class GoodsInfo_Model
@@ -35,13 +35,14 @@ namespace Signet.ViewModel
 
         public string Unit { get; set; }
         public long Unit_ID { get; set; }
-        public UInt16 Repertory { get; set; }
+        public int Inventory { get; set; }
     }
 
 
     public class GoodsList_ViewModel: ViewModelBase
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         #region Message
         private readonly IDialogCoordinator _dialogCoordinator;
         // Simple method which can be used on a Button
@@ -90,6 +91,8 @@ namespace Signet.ViewModel
 
         public GoodsList_ViewModel()
         {
+            _dialogCoordinator = DialogCoordinator.Instance;
+
             mGoodsList_Model = new GoodsList_Model() {
             GoodsTypeList = new System.Collections.ObjectModel.ObservableCollection<GoodsType_Table>
             (SqlSugarHelper.mDB.Queryable<GoodsType_Table>().ToList()),
@@ -113,8 +116,7 @@ namespace Signet.ViewModel
                     //Console.WriteLine($"Loading page {CurrentPage} with size {PageSize}");
                 }
             };
-        }
-
+        } 
 
         #region 查询
         private RelayCommand _Search_Command;
@@ -149,6 +151,8 @@ namespace Signet.ViewModel
         {
             try
             {
+                GlobalInfo.InventoryThreshold = GlobalInfo.configService.GetConfigValue("InventoryThreshold", 10);
+
                 int totalCount = 0;
                 int totalPage = 0;
 
@@ -179,6 +183,7 @@ namespace Signet.ViewModel
                     Classification_ID = ct.Classification_ID,
                     Unit = ut.Unit_Name,
                     Unit_ID = ut.Unit_ID,
+                    Inventory = gt.Inventory,
                 }).ToPageList(curPage, pageSize, ref totalCount, ref totalPage);
                 TotalItems = totalCount;
 

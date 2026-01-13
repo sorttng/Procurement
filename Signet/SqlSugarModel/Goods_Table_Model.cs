@@ -63,6 +63,11 @@ namespace Signet.SqlSugarModel
         [SugarColumn(ColumnName = "Classification")]
         public long Classification { get; set; }
 
-
+        /// <summary>
+        /// 备  注:库存
+        /// 默认值:
+        ///</summary>
+        [SugarColumn(ColumnName = "Inventory",IsOnlyIgnoreInsert = true)]
+        public int Inventory { get; set; }
     }
 }

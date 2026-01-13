@@ -20,5 +20,8 @@ namespace Signet.Common
         public static DateTime registerTime;
 
         public static ModbusSlave slave = null;
+        public static ConfigService configService;
+        //库存阈值
+        public static int InventoryThreshold = 10;
     }
 }
